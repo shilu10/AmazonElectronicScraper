@@ -42,7 +42,7 @@ class Scraper :
      #   self.__file_name = value
         
     
-    def finding(self , value , items) :
+    def __finding(self , value , items) :
         if value != None :
             items.append(value.text.replace(',' , ''))
         else:

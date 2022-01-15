@@ -1,11 +1,12 @@
 from bs4 import BeautifulSoup
 import requests,csv
 import re
+import argparse
 
 
 class Scraper :    
     AL_ITEMS = [ ]
-    #row1 and row2 for comparision in visual mode
+    
     def __init__(self , product_search : str ,file_name : str , page_no = 1) :
         #checking for negative numbers in page argument from the users
         assert page_no > 0 , f' { page_no } is in negative . Please provide a positive pageno'
@@ -13,10 +14,7 @@ class Scraper :
         self.__product_search = product_search
         self.__page_no = page_no
         self.__file_name = file_name
-        
-    
-    # encapsulation 
-    
+
     @property 
     def page_no(self) :
         return self.__page_no
@@ -28,35 +26,28 @@ class Scraper :
     @property
     def file_name(self) :
         return self.__file_name
-    
-    #@page_no.setter
-    #def page_no(self, value) :
-     #   self.__page_no = value
-    
+
     @product_search.setter
     def product_search(self, value) :
         self.__product_search = value
         
-   # @file_name.setter
-    #def file_name(self, value) :
-     #   self.__file_name = value
-        
-    
     def __finding(self , value , items) :
         if value != None :
             items.append(value.text.replace(',' , ''))
         else:
             items.append("")
              
-    def run(self) :
-        
+    def run(self) :     
         items = [ ]
         #Creating the Request Headers for HTTP
         self.product_search=self.product_search.replace(' ','+')
-        url=f'https://www.amazon.in/s?k={self.product_search}&ref=nb_sb_noss_2'+str(self.page_no)+'?ie=UTF8&pg='+str(self.page_no)
-        HEADERS = {"User-Agent":"Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0", "Accept-Encoding":"gzip, deflate, br", "Accept":	"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8", "DNT":"1","Connection":"close", "Upgrade-Insecure-Requests":"1"}
-        #HEADERS = use ypur headers here
         
+        #creating a url
+        url=f'https://www.amazon.in/s?k={self.product_search}&ref=nb_sb_noss_2'+str(self.page_no)+'?ie=UTF8&pg='+str(self.page_no)
+        
+        #HEADERS = use ypur headers here
+        HEADERS = {"User-Agent":"Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0", "Accept-Encoding":"gzip, deflate, br", "Accept":	"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8", "DNT":"1","Connection":"close", "Upgrade-Insecure-Requests":"1"}
+             
         #HTTP Response 
         page = requests.get(url,headers=HEADERS)
 
@@ -110,9 +101,3 @@ class Scraper :
             writer.writerows(self.AL_ITEMS)
         return "[+] Details collected Successfully....."  
         
-   
-
-        
-laptops = Scraper('laptops'  ,'LaptopAmazon.csv' , 15)
-#if __name__ == '__main__' : 
-laptops.run()

@@ -42,7 +42,7 @@ pip install requests
 ## Setup
 To run this project,clone this repository in your machine:
 
-* Make sure to have a Pythoninstalled 
+* Make sure to have a Python installed 
 
 ```
 $ cd ../AmazonElectronicScraper
